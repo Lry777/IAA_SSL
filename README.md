@@ -1,8 +1,8 @@
-# DHT-Net:Dynamic Hierarchical Transformer Network for Liver and Tumor Segmentation
-This is the official pytorch implementation of the DHT-Net:
+# Improving Image Aesthetic Assessment via Efficient Self-Training
+This is the official pytorch implementation of the IAA_SSL:
 
 <div align = "center">
-<img src="dhtnet.png" width="512px" height="250px" />
+<img src="network.pdf" width="512px" height="250px" />
  </div>
  <br />
 
