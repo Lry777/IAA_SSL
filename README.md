@@ -2,7 +2,7 @@
 This is the official pytorch implementation of the IAA_SSL:
 
 <div align = "center">
-<img src="network.pdf" width="512px" height="250px" />
+<img src="network.png" width="512px" height="250px" />
  </div>
  <br />
 
