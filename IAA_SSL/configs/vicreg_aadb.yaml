@@ -1,0 +1,87 @@
+name: vicreg_aadb-resnet50_pretrain
+amp: True
+num_train_iter: 34
+data_dir: '/home/lry/DATASET/AADB'
+log_dir: '/home/lry/Code/IAA_SSL/result'
+ckpt_dir: '/home/lry/Code/IAA_SSL/result'
+
+dataset: 
+  name: AADB
+  image_size: 224
+  num_workers: 8
+
+model: 
+  name: vicreg
+  backbone: resnet50
+  proj_layers: 2
+
+pretrain:
+  optimizer: 
+    name: SGD
+    weight_decay: 0.0005
+    momentum: 0.9
+  warmup_epochs: 5
+  warmup_lr: 0
+  base_lr: 0.001
+  final_lr: 0
+  num_epochs: 100 # this parameter influence the lr decay
+  stop_at_epoch: 100 # has to be smaller than num_epochs
+  batch_size: 128
+  save_interval: 10
+  milestones: [100]
+  knn_monitor: False # knn monitor will take more time
+  knn_interval: 1
+  knn_k: 200
+eval: # linear evaluation, False will turn off automatic evaluation after training
+  optimizer:
+    name: SGD
+    weight_decay: 0
+    momentum: 0.9
+  task_id: vicreg_eval_1.0data
+  num_attr: 12
+  data_name: train
+  warmup_lr: 0
+  warmup_epochs: 0
+  base_lr: 0.001
+  final_lr: 0
+  batch_size: 128
+  num_epochs: 100
+
+fine_tune:
+  optimizer:
+    name: adam
+  task_id: vicreg_eval_1.0data_rio
+  data_name: train
+  dropout: 0.0
+  num_classes: 12
+  epochs: 32
+  batch_size: 128
+  base_lr: 0.0001
+  seed: 42
+
+distillation:
+  optimizer:
+    name: adam
+  task_id: vicreg_dl_1.0data
+  dropout: 0
+  num_classes: 12
+  epochs: 32
+  batch_size: 96
+  base_lr: 0.0001
+  seed: 42
+  alpha: 0.6
+  T: 64.0
+  kd_mode: mse
+
+logger:
+  tensorboard: True
+  matplotlib: True
+
+seed: 0 # None type for yaml file
+# two things might lead to stochastic behavior other than seed:
+# worker_init_fn from dataloader and torch.nn.functional.interpolate 
+# (keep this in mind if you want to achieve 100% deterministic)
+
+
+
+
